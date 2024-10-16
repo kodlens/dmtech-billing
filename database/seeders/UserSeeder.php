@@ -17,26 +17,14 @@ class UserSeeder extends Seeder
         $users = [
             [
                 'username' => 'admin',
-                'lname' => 'ZAPANTA',
-                'fname' => 'JEZEL',
+                'lname' => 'FABRIA',
+                'fname' => 'MAFT JESSIE JAMES',
                 'mname' => '',
                 'sex' => 'MALE',
-                'email' => 'admin@publication.org',
+                'email' => 'admin@dmtech.org',
                 'password' => Hash::make('1'),
                 'role' => 'ADMINISTRATOR',
             ],
-
-            [
-                'username' => 'user',
-                'lname' => 'KAAMINO',
-                'fname' => 'MELDHE',
-                'mname' => '',
-                'sex' => 'FEMALE',
-                'email' => 'user@publication.org',
-                'password' => Hash::make('1'),
-                'role' => 'STUDENT',
-            ],
-           
         ];
 
         \App\Models\User::insertOrIgnore($users);
