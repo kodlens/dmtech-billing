@@ -141,11 +141,12 @@ export default function AdminConsumerIndex({ auth }: PageProps) {
 
 							<Column title="Id" dataIndex="id" key="id"/>
 							<Column title="Username" dataIndex="username" key="username"/>
+							<Column title="Account No." dataIndex="account_no" key="account_no"/>
 							<Column title="Last Name" key="lname" dataIndex="lname"/>
 							<Column title="First Name" key="fname" dataIndex="fname"/>
 							<Column title="Middle Name" key="mname" dataIndex="mname"/>
 							<Column title="Email" dataIndex="email" key="email"/>
-							<Column title="Role" dataIndex="role" key="role"/>
+							<Column title="Due Date" dataIndex="due_date" key="due_date"/>
 							<Column title="Active" dataIndex="active" key="active" render={(active)=>(
 								active ? (
 									<span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES</span>

@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\User;
-
+use App\Models\Consumer;
+use Illuminate\Support\Facades\Hash;
 
 class AdminConsumerController extends Controller
 {
@@ -17,7 +17,7 @@ class AdminConsumerController extends Controller
 
     public function getData(Request $req){
 
-        return User::where('username', 'like', $req->search . '%')
+        return Consumer::where('account_no', 'like', $req->accountno . '%')
             ->where('lname', 'like', $req->lname . '%')
             ->where('role',  'USER')
             ->paginate($req->perpage);
@@ -30,11 +30,12 @@ class AdminConsumerController extends Controller
     public function create(){
         return Inertia::render('Admin/Consumer/AdminConsumerCreateEdit', [
             'id' => 0,
-            'data' => null,
+            'consumer' => null,
         ]);
     }
 
     public function store(Request $req){ 
+
         $req->validate([
             'username' => ['required', 'string', 'unique:users'],
             'lname' => ['required', 'string'],
@@ -42,11 +43,12 @@ class AdminConsumerController extends Controller
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'string', 'confirmed'],
             'sex' => ['required', 'string'],
-            'role' => ['required', 'string'],
             'address' => ['required', 'string'],
         ]);
 
-        User::create([
+        $dateConnected = date('Y-m-d', strtotime($req->date_connected));
+
+        $data = Consumer::create([
             'username' => $req->username,
             'password' => Hash::make($req->password),
             'lname' => $req->lname,
@@ -54,10 +56,16 @@ class AdminConsumerController extends Controller
             'mname' => $req->mname,
             'email' => $req->email,
             'sex' => strtoupper($req->sex),
-            'role' => $req->role,
+            'role' => 'USER',
             'address' => $req->address,
+            'due_date' => $req->due_date,
+            'date_connected' => $dateConnected,
             'active' => $req->active ? 1 : 0,
         ]);
+        
+        $consumer = Consumer::find($data->id);
+        $consumer->account_no = date('Ymd' . $data->id);
+        $consumer->save();
 
         return response()->json([
             'status' => 'saved'
@@ -66,24 +74,27 @@ class AdminConsumerController extends Controller
 
 
     public function edit($id){
-        $data = User::find($id);
+        $data = Consumer::find($id);
+
         return Inertia::render('Admin/Consumer/AdminConsumerCreateEdit', [
             'id' => $id,
-            'data' => $data
+            'consumer' => $data
         ]);
     }
 
     public function update(Request $req, $id){ 
-        //return $req;
+
         $req->validate([
             'username' => ['required', 'string', 'unique:users,username,'. $id . ',id'],
             'lname' => ['required', 'string'],
+            'fname' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users,email,'. $id . ',id'],
-            'sex' => ['required', 'string'],
-            'role' => ['required', 'string'],
+            'sex' => ['required', 'string']
         ]);
 
-        User::where('id', $id)
+        $dateConnected = date('Y-m-d', strtotime($req->date_connected));
+
+        Consumer::where('id', $id)
             ->update([
                 'username' => $req->username,
                 'lname' => $req->lname,
@@ -91,7 +102,10 @@ class AdminConsumerController extends Controller
                 'mname' => $req->mname,
                 'email' => $req->email,
                 'sex' => strtoupper($req->sex),
-                'role' => $req->role,
+                'address' => $req->address,
+                'due_date' => $req->due_date,
+                'date_connected' => $dateConnected,
+                'active' => $req->active ? 1 : 0,
             ]);
 
         return response()->json([

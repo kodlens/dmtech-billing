@@ -5,18 +5,34 @@ export interface User {
     username: string,
     sex: string,
     name: string;
+    lname: string;
+    fname: string;
+    mname: string;
+    email: string;
+    email_verified_at: string;
+    active: number;
+	role: string;
+}
+
+export interface Consumer {
+	data(data: any): unknown;
+    id: number;
+    username: string,
+    sex: string,
+    name: string;
     account_no: string;
     lname: string;
     fname: string;
     mname: string;
     email: string;
     email_verified_at: string;
-    active: boolean;
+    active: number;
 	role: string;
     address: string;
     due_date: number;
     date_connected: Date;
 }
+
 
 
 
