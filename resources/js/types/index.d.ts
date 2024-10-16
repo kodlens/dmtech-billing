@@ -5,6 +5,7 @@ export interface User {
     username: string,
     sex: string,
     name: string;
+    account_no: string;
     lname: string;
     fname: string;
     mname: string;
@@ -12,16 +13,12 @@ export interface User {
     email_verified_at: string;
     active: boolean;
 	role: string;
-
+    address: string;
+    due_date: number;
+    date_connected: Date;
 }
 
-export interface Author extends User {
-    data(data: any): unknown;
-    id: number;
-    author: string;
-    role: string;
-    is_active: number;
-}
+
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {

@@ -1,16 +1,16 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { PageProps, User } from '@/types'
-import { Head } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 
-import { FileAddOutlined, LikeOutlined, 
-    DeleteOutlined, EditOutlined, 
+import { FileAddOutlined, LikeOutlined,
+    DeleteOutlined, EditOutlined,
 	EyeInvisibleOutlined,EyeTwoTone,
     QuestionCircleOutlined } from '@ant-design/icons';
 
-import { Space, Table, 
+import { Space, Table,
     Pagination, Button, Modal,
     Form, Input, Select, Checkbox,
-	App, 
+	App,
     DatePicker} from 'antd';
 
 
@@ -22,7 +22,7 @@ const { Column } = Table;
 
 
 export default function AdminConsumerIndex({ auth }: PageProps) {
-	
+
 	const [form] = Form.useForm();
 
 	const  { notification } = App.useApp();
@@ -40,13 +40,11 @@ export default function AdminConsumerIndex({ auth }: PageProps) {
     const [errors, setErrors] = useState<any>({});
 
     const [id, setId] = useState(0);
-	
 
 	interface PaginateResponse {
 		data: User[],
 		total: number;
 	}
-
 	const loadDataAsync = async () => {
 
         setLoading(true)
@@ -75,33 +73,12 @@ export default function AdminConsumerIndex({ auth }: PageProps) {
         setPerPage(perPage)
     }
 
-
-	const getUser = async (dataId:number) => {
-		try{
-			const response = await axios.get<User>(`/admin/consumers/${dataId}`);
-			form.setFields([
-				{ name: 'username', value: response.data.username },
-				{ name: 'lname', value: response.data.lname },
-				{ name: 'fname', value: response.data.fname },
-				{ name: 'mname', value: response.data.mname },
-				{ name: 'email', value: response.data.email },
-				{ name: 'sex', value: response.data.sex },
-				{ name: 'role', value: response.data.role }
-			]);
-		}catch(err){
-		}
-    }
-
 	const handClickNew = () => {
-        //router.visit('/');
-		setId(0)
-        setOpen(true)
+        router.visit('/admin/consumers/create');
     }
 
 	const handleEditClick = (id:number) => {
-		setId(id);
-        setOpen(true);
-        getUser(id);
+		router.visit('/admin/consumers/' + id + '/edit')
 	}
 
 	const handleDeleteClick = async (id:number) => {
@@ -110,7 +87,7 @@ export default function AdminConsumerIndex({ auth }: PageProps) {
 			loadDataAsync()
 		}
 	}
-	
+
 
 	const onFinish = async (values:User) =>{
 
@@ -124,7 +101,7 @@ export default function AdminConsumerIndex({ auth }: PageProps) {
 				}
 			}catch(err:any){
 				if(err.response.status === 422){
-	
+
 				}
 			}
 		}else{
@@ -137,7 +114,7 @@ export default function AdminConsumerIndex({ auth }: PageProps) {
 				}
 			}catch(err:any){
 				if(err.response.status === 422){
-	
+
 				}
 			}
 		}
@@ -145,8 +122,8 @@ export default function AdminConsumerIndex({ auth }: PageProps) {
 
 	return (
 		<AuthenticatedLayout user={auth.user}>
-            
-			<Head title="User Management"></Head>
+
+			<Head title="Consumer Management"></Head>
 
 			<div className='flex mt-10 justify-center items-center'>
 				{/* card */}
@@ -176,256 +153,33 @@ export default function AdminConsumerIndex({ auth }: PageProps) {
 									<span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
 								)
 							)}/>
-							<Column title="Action" key="action" 
+							<Column title="Action" key="action"
 								render={(_, data:User) => (
 									<Space size="small">
 
-										<Button shape="circle" icon={<EditOutlined/>} 
+										<Button shape="circle" icon={<EditOutlined/>}
 											onClick={ ()=> handleEditClick(data.id) } />
 									</Space>
 								)}
 							/>
 						</Table>
 
-						<Pagination className='mt-4' 
+						<Pagination className='mt-4'
 							onChange={onPageChange}
-							defaultCurrent={1} 
+							defaultCurrent={1}
 							total={total} />
 
 						<div className='flex flex-end mt-2'>
-							<Button className='ml-auto' 
-								icon={<FileAddOutlined />} 
+							<Button className='ml-auto'
+								icon={<FileAddOutlined />}
 								type="primary" onClick={handClickNew}>
 								New
-							</Button>     
+							</Button>
 						</div>
 					</div>
 				</div>
 				{/* card */}
 			</div>
-
-
-			{/* Modal */}
-            <Modal
-                open={open}
-                title="USER INFORMATION"
-                okText="Save"
-                cancelText="Cancel"
-                okButtonProps={{
-                    autoFocus: true,
-                    htmlType: "submit",
-                }}
-                onCancel={() => setOpen(false)}
-                destroyOnClose
-                modalRender={(dom) => (
-                    <Form
-                        layout="vertical"
-                        form={form}
-                        name="form_in_modal"
-                        autoComplete="off"
-                        initialValues={{
-                            username: "",
-                            password: "",
-                            email: "",
-                            name: "",
-                            sex: "",
-                            role: "",
-                            active: true,
-                        }}
-                        clearOnDestroy
-                        onFinish={(values) => onFinish(values)}
-                    >
-                        {dom}
-                    </Form>
-                )}
-            >
-                <Form.Item
-                    name="username"
-                    label="Username"
-                    validateStatus={errors.username ? "error" : ""}
-                    help={errors.username ? errors.username[0] : ""}
-                >
-                    <Input placeholder="Username" />
-                </Form.Item>
-
-                {id < 1 ? (
-                    <>
-                        <Form.Item
-                            name="password"
-                            label="Password"
-                            validateStatus={errors.password ? "error" : ""}
-                            help={errors.password ? errors.password[0] : ""}
-                        >
-                            <Input.Password
-                                iconRender={(visible) =>
-                                    visible ? (
-                                        <EyeTwoTone />
-                                    ) : (
-                                        <EyeInvisibleOutlined />
-                                    )
-                                }
-                                placeholder="Re-type Password"
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="password_confirmation"
-                            label="Re-type Password"
-                            validateStatus={
-                                errors.password_confirmation ? "error" : ""
-                            }
-                            help={
-                                errors.password_confirmation
-                                    ? errors.password_confirmation[0]
-                                    : ""
-                            }
-                        >
-                            <Input.Password
-                                iconRender={(visible) =>
-                                    visible ? (
-                                        <EyeTwoTone />
-                                    ) : (
-                                        <EyeInvisibleOutlined />
-                                    )
-                                }
-                                placeholder="Re-type Password"
-                            />
-                        </Form.Item>
-                    </>
-                ) : (
-                    ""
-                )}
-
-                <Form.Item
-                    name="lname"
-                    label="Last Name"
-                    validateStatus={errors.lname ? "error" : ""}
-                    help={errors.lname ? errors.lname[0] : ""}
-                >
-                    <Input placeholder="Last Name" />
-                </Form.Item>
-
-                <Form.Item
-                    name="fname"
-                    label="First Name"
-                    validateStatus={errors.fname ? "error" : ""}
-                    help={errors.fname ? errors.fname[0] : ""}
-                >
-                    <Input placeholder="First Name" />
-                </Form.Item>
-
-                <Form.Item
-                    name="mname"
-                    label="Middle Name"
-                    validateStatus={errors.mname ? "error" : ""}
-                    help={errors.mname ? errors.mname[0] : ""}
-                >
-                    <Input placeholder="FiMiddlerst Name" />
-                </Form.Item>
-
-                <Form.Item
-                    name="email"
-                    label="Email"
-                    validateStatus={errors.email ? "error" : ""}
-                    help={errors.email ? errors.email[0] : ""}
-                >
-                    <Input placeholder="Email" />
-                </Form.Item>
-
-				<Form.Item
-                    name="address"
-                    label="Address"
-                 
-                    validateStatus={errors.address ? "error" : ""}
-                    help={errors.address ? errors.address[0] : ""}
-                >
-                    <Input.TextArea rows={6} placeholder="Address" />
-                </Form.Item>
-
-                <div className="flex gap-4">
-                    <Form.Item
-                        name="sex"
-                        label="Sex"
-                        className="w-full"
-                        validateStatus={errors.sex ? "error" : ""}
-                        help={errors.sex ? errors.sex[0] : ""}
-                    >
-                        <Select
-                            options={[
-                                { value: "MALE", label: "MALE" },
-                                { value: "FEMALE", label: "FEMALE" },
-                            ]}
-                        />
-                    </Form.Item>
-
-                    
-
-                    <Form.Item
-                        name="role"
-                        label="Role"
-                        className="w-full"
-                        validateStatus={errors.role ? "error" : ""}
-                        help={errors.role ? errors.role[0] : ""}
-                    >
-                        <Select
-                            options={[
-                                { value: "USER", label: "USER" },
-                                { value: "STAFF", label: "STAFF" },
-                                { value: "ADMINISTRATOR", label: "ADMINISTRATOR" },
-                            ]}
-                        />
-                    </Form.Item>
-                </div>
-
-                <div className="flex gap-4">
-                    <Form.Item
-                        name="publication_date"
-                        label="Date Publish"
-                        className="w-full"
-                        validateStatus={
-                            errors.publication_date ? "error" : ""
-                        }
-                        help={
-                            errors.publication_date
-                                ? errors.publication_date[0]
-                                : ""
-                        }
-                    >
-                        <DatePicker className="w-full" />
-                    </Form.Item>
-
-                    
-
-                    <Form.Item
-                        name="due_date"
-                        label="Due Date"
-                        className="w-full"
-                        validateStatus={errors.due_date ? "error" : ""}
-                        help={errors.due_date ? errors.due_date[0] : ""}
-                    >
-                      <Input />
-                    </Form.Item>
-                </div>
-
-                <Form.Item
-                    name="active"
-                    valuePropName="checked"
-                    className="w-full"
-                    label="Featured"
-                    validateStatus={
-                        errors.active ? "error" : ""
-                    }
-                    help={
-                        errors.active
-                            ? errors.active[0]
-                            : ""
-                    }
-                >
-                    <Checkbox>Active</Checkbox>
-                </Form.Item>
-
-            </Modal>
-
 
 		</AuthenticatedLayout>
 	)

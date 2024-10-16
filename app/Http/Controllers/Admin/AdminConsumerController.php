@@ -28,7 +28,10 @@ class AdminConsumerController extends Controller
     }
 
     public function create(){
-        return Inertia::render('Admin/Consumer/AdminConsumerCreateEdit');
+        return Inertia::render('Admin/Consumer/AdminConsumerCreateEdit', [
+            'id' => 0,
+            'data' => null,
+        ]);
     }
 
     public function store(Request $req){ 
@@ -59,6 +62,15 @@ class AdminConsumerController extends Controller
         return response()->json([
             'status' => 'saved'
         ], 200);
+    }
+
+
+    public function edit($id){
+        $data = User::find($id);
+        return Inertia::render('Admin/Consumer/AdminConsumerCreateEdit', [
+            'id' => $id,
+            'data' => $data
+        ]);
     }
 
     public function update(Request $req, $id){ 
