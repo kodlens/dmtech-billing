@@ -25,14 +25,8 @@ class RedirectIfAuthenticated
                 
                 $role = Auth::user()->role;
                 //return redirect(RouteServiceProvider::HOME);
-                if(strtolower($role) == 'admin')
+                if(strtolower($role) == 'administrator')
                     return redirect('/admin/dashboard');
-
-                if(strtolower($role) == 'publisher')
-                    return redirect('/publisher/dashboard');
-
-                if(strtolower($role) == 'author')
-                    return redirect('/author/dashboard');
 
                 //return redirect('/panel/dashboard');
             }

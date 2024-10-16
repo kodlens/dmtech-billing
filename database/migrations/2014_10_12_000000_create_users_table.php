@@ -22,7 +22,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('address')->nullable();
+            $table->integer('due_date')->default(0);
             $table->tinyInteger('active')->nullable()->default(1);
+            $table->date('date_connected')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -30,7 +30,7 @@ use Illuminate\Http\Request;
 
 
 /** =======================================
- * CATEGORY PAGES HERE
+ * 
  * ========================================
  */
 Route::get('/', [App\Http\Controllers\WelcomePageController::class, 'index'])->name('welcome');
@@ -49,17 +49,38 @@ Route::middleware('auth')->group(function () {
 });
 
 
+
+/** =======================================
+ *  ADMINISTRATOR MODULE HERE
+ * ========================================
+ */
 Route::prefix('admin')->middleware('auth', 'admin')->group(function () {
 
+
+    Route::get('/dashboard', [App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
+
+    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/dashboard', [App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::resource('/billings', App\Http\Controllers\Admin\AdminBillingController::class);
+    Route::get('/get-billings', [App\Http\Controllers\Admin\AdminBillingController::class, 'getData'])->name('admin.billings.getdata');
+ 
+    Route::resource('/consumers', App\Http\Controllers\Admin\AdminConsumerController::class)->names([
+        'index'=> 'admin.consumers.index'
+    ]);
+    Route::get('/get-consumers', [App\Http\Controllers\Admin\AdminConsumerController::class, 'getData'])->name('admin.consumers.getdata');
+    
 
-    Route::resource('/users', App\Http\Controllers\Admin\AdminUserController::class);
+    Route::resource('/users', App\Http\Controllers\Admin\AdminUserController::class)->names([
+        'index'=> 'admin.users.index'
+    ]);
     Route::get('/get-users', [App\Http\Controllers\Admin\AdminUserController::class, 'getData'])->name('users.getdata');
-    Route::post('/users-change-password/{id}', [App\Http\Controllers\Admin\AdminUserController::class, 'changePassword'])->name('users.change-password');
+    
+    Route::post('/users-change-password/{id}', [App\Http\Controllers\Admin\AdminUserController::class, 'changePassword'])->name('admin.users.change-password');
+    
+
     Route::post('/change-password/{id}', [App\Http\Controllers\Admin\AdminUserController::class, 'changePassword'])->name('users.change-password');
 
     Route::resource('/roles', App\Http\Controllers\Admin\AdminRoleController::class);

@@ -16,12 +16,12 @@ import { Space, Table,
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import ChangePassword from './partials/ChangePassword';
+
 
 const { Column } = Table;
 
 
-export default function AdminUserIndex({ auth }: PageProps) {
+export default function AdminConsumerIndex({ auth }: PageProps) {
 	
 	const [form] = Form.useForm();
 
@@ -56,7 +56,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
         ].join('&');
 
 		try{
-			const res = await axios.get<PaginateResponse>(`/admin/get-users?${params}`);
+			const res = await axios.get<PaginateResponse>(`/admin/get-consumers?${params}`);
 			setData(res.data.data)
 			setTotal(res.data.total)
 			setLoading(false)
@@ -78,7 +78,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 
 	const getUser = async (dataId:number) => {
 		try{
-			const response = await axios.get<User>(`/admin/users/${dataId}`);
+			const response = await axios.get<User>(`/admin/consumers/${dataId}`);
 			form.setFields([
 				{ name: 'username', value: response.data.username },
 				{ name: 'lname', value: response.data.lname },
@@ -105,7 +105,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 	}
 
 	const handleDeleteClick = async (id:number) => {
-		const res = await axios.delete('/admin/users/{id}');
+		const res = await axios.delete('/admin/consumers/{id}');
 		if(res.data.status === 'deleted'){
 			loadDataAsync()
 		}
@@ -116,7 +116,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 
 		if(id > 0){
 			try{
-				const res = await axios.put('/admin/users/' + id, values)
+				const res = await axios.put('/admin/consumers/' + id, values)
 				if(res.data.status === 'updated'){
 					notification.info({ placement: 'bottomRight', message: 'Updated!', description: 'User successfully updated.'})
 					setOpen(false)
@@ -129,7 +129,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 			}
 		}else{
 			try{
-				const res = await axios.post('/admin/users', values)
+				const res = await axios.post('/admin/consumers', values)
 				if(res.data.status === 'saved'){
 					notification.info({ placement: 'bottomRight', message: 'Saved!', description: 'User successfully saved.'})
 					setOpen(false)
@@ -154,7 +154,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 					sm:w-[640px]
 					md:w-[990px]'>
 					{/* card header */}
-					<div className="font-bold mb-4 text-lg">LIST OF USER</div>
+					<div className="font-bold mb-4 text-lg">LIST OF CONSUMERS/CLIENTS</div>
 					{/* card body */}
 					<div>
 						<Table dataSource={data}
@@ -179,9 +179,9 @@ export default function AdminUserIndex({ auth }: PageProps) {
 							<Column title="Action" key="action" 
 								render={(_, data:User) => (
 									<Space size="small">
+
 										<Button shape="circle" icon={<EditOutlined/>} 
 											onClick={ ()=> handleEditClick(data.id) } />
-										<ChangePassword data={data} onSuccess={loadDataAsync}/>
 									</Space>
 								)}
 							/>

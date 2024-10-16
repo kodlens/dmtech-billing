@@ -5,10 +5,9 @@ export interface User {
     username: string,
     sex: string,
     name: string;
-    lastname: string;
-    firstname: string;
-    middlename: string;
-    bio: string;
+    lname: string;
+    fname: string;
+    mname: string;
     email: string;
     email_verified_at: string;
     active: boolean;

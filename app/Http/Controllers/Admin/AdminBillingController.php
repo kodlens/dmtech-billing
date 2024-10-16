@@ -6,22 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Page;
 
 
-class AdminPageController extends Controller
+class AdminBillingController extends Controller
 {
+    //
     public function index(){
-        return Inertia::render('Admin/Page/AdminPageIndex');
+        return Inertia::render('Admin/Billing/BillingIndex');
     }
 
     public function getData(Request $req){
 
-        $sort = explode('.', $req->sort_by);
-       
-        return Page::where('name', 'like', '%'. $req->search . '%')
-            ->orderBy('id', 'desc')
+        return User::where('username', 'like', $req->lastname . '%')
+            ->where('lastname', 'like', $req->lastname . '%')
             ->paginate($req->perpage);
     }
-
 }

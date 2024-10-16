@@ -7,7 +7,9 @@ import {
     FilePptOutlined,
     UserOutlined,ProfileOutlined,
     FormOutlined,
-    BarsOutlined, FileJpgOutlined
+    BarsOutlined, FileJpgOutlined,
+    DashOutlined,
+    DashboardOutlined
   } from '@ant-design/icons';
 
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';
@@ -22,7 +24,7 @@ const siderStyle: React.CSSProperties = {
 
 export default function AdminLayout(
     { user, children }: PropsWithChildren<{ user: any}>) {
-
+     
     const { post } = useForm();
 
     const [collapsed, setCollapsed] = useState(false);
@@ -38,138 +40,65 @@ export default function AdminLayout(
 		const items:MenuItem[] = [];
 
 		items.push({
-			key: 'panel.dashboard',
-            icon: <UserOutlined />,
+			key: 'admin.dashboard.index',
+            icon: <DashboardOutlined />,
             label: 'Dashboard',
             onClick: () => router.visit('/admin/dashboard')
 		},
+        
         {
-            key: 'sections.index',
-            icon: <ProfileOutlined />,
-            label: 'Sections',
-            onClick: () => router.visit('/admin/sections')
-
-        },
-        {
-            key: 'categories.index',
+            key: 'admin.billing.index',
             icon: <BarsOutlined />,
-            label: 'Categories',
-            onClick: () => router.visit('/admin/categories')
+            label: 'Billing',
+            onClick: () => router.visit('/admin/billings')
         },
+         
         {
-            type: 'divider',
-        },
-        {
-            key: 'pages.index',
+            key: 'admin.consumers.index',
             icon: <FilePptOutlined />,
-            label: 'Pages',
-            // onClick: () => router.visit('/admin/pages')
-            children: [
-                {
-                    key: 'pages.banner.index',
-                    label: 'Banners' ,
-                    onClick: ()=> router.visit('/admin/pages/banners'),
-                },
-                {
-                    key: 'pages.dostv.index',
-                    label: 'DOSTv' ,
-                    onClick: ()=> router.visit('/admin/pages/dostvs'),
-                },
-                {
-                    key: 'pages.featured-videos.index',
-                    label: 'Featured Videos' ,
-                    onClick: ()=> router.visit('/admin/pages/featured-videos'),
-                },
-            ],
+            label: 'Consumers',
+            onClick: () => router.visit('/admin/consumers')
         },
         {
             type: 'divider',
         },
-        {
-            type: 'divider',
-        },
-        {
-            key: 'posts',
-            icon: <FormOutlined />,
-            label: 'Posts',
-
-            children: [
-                {
-                    key: 'posts.index',
-                    label: 'Article' ,
-                    onClick: ()=> router.visit('/admin/posts'),
-                },
-                {
-                    key: 'posts.archives',
-                    label: 'Archive' ,
-                    onClick: ()=> router.visit('/admin/post-archives'),
-                },
-            ],
-        },
+        // {
+        //     key: 'pages.index',
+        //     icon: <FilePptOutlined />,
+        //     label: 'Pages',
+        //     // onClick: () => router.visit('/admin/pages')
+        //     children: [
+        //         {
+        //             key: 'pages.banner.index',
+        //             label: 'Banners' ,
+        //             onClick: ()=> router.visit('/admin/pages/banners'),
+        //         },
+        //         {
+        //             key: 'pages.dostv.index',
+        //             label: 'DOSTv' ,
+        //             onClick: ()=> router.visit('/admin/pages/dostvs'),
+        //         },
+        //         {
+        //             key: 'pages.featured-videos.index',
+        //             label: 'Featured Videos' ,
+        //             onClick: ()=> router.visit('/admin/pages/featured-videos'),
+        //         },
+        //     ],
+        // },
+        // {
+        //     type: 'divider',
+        // },
         {
             type: 'divider'
         },
-
-        // {
-        //     key: 'roles.index',
-        //     icon: <IdcardOutlined />,
-        //     label: 'Roles',
-        //     onClick: ()=> router.visit('/admin/roles')
-        // },
-        // {
-        //     key: 'permissions.index',
-        //     icon: <HddOutlined />,
-        //     label: 'Permissions',
-        //     onClick: ()=> router.visit('/admin/permissions')
-        // },
-        // {
-        //     key: 'role-has-permissions.index',
-        //     icon: <FileJpgOutlined />,
-        //     label: 'Role Permissions',
-        //     onClick: ()=> router.visit('/admin/role-has-permissions')
-        // },
         {
-            key: 'users.index',
+            key: 'admin.users.index',
             icon: <FileJpgOutlined />,
             label: 'Users',
             onClick: ()=> router.visit('/admin/users')
         });
 
-		// if (paramPermissions.includes('sections.index')) {
-		// 	items.push(
-        //     );
-		// }
-
-		// if (paramPermissions.includes('categories.index')) {
-		// 	items.push( );
-		// }
-
-		// if (paramPermissions.includes('posts.index')) {
-		// 	items.push();
-		// }
-
-        // if (paramPermissions.includes('trashes.index')) {
-		// 	items.push();
-		// }
-
-
-		// if (paramPermissions.includes('roles.index')) {
-		// 	items.push();
-		// }
-
-		// if (paramPermissions.includes('permissions.index')) {
-		// 	items.push(
-        //     );
-		// }
-		// if (paramPermissions.includes('role-has-permissions.index')) {
-		// 	items.push(
-        //     );
-		// }
-
-        // if (paramPermissions.includes('users.index')) {
-		// 	items.push(
-        //     ;
-		// }
+		
 
 		return items;
 	}
@@ -219,7 +148,7 @@ export default function AdminLayout(
 
 
                             <div className='ml-auto mr-4 flex items-center gap-4'>
-                                <Link href=''>{user.lastname} {user.firstname[0]}.</Link>
+                                <Link href=''>{user.lname} {user.fname[0]}.</Link>
                                 <Button className='' onClick={handleLogout}>Logout</Button>
                             </div>
 

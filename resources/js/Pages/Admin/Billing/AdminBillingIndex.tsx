@@ -10,18 +10,17 @@ import { FileAddOutlined, LikeOutlined,
 import { Space, Table, 
     Pagination, Button, Modal,
     Form, Input, Select, Checkbox,
-	App, 
-    DatePicker} from 'antd';
+	App } from 'antd';
 
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import ChangePassword from './partials/ChangePassword';
+
 
 const { Column } = Table;
 
 
-export default function AdminUserIndex({ auth }: PageProps) {
+export default function AdminBillingIndex({ auth }: PageProps) {
 	
 	const [form] = Form.useForm();
 
@@ -377,36 +376,6 @@ export default function AdminUserIndex({ auth }: PageProps) {
                     </Form.Item>
                 </div>
 
-                <div className="flex gap-4">
-                    <Form.Item
-                        name="publication_date"
-                        label="Date Publish"
-                        className="w-full"
-                        validateStatus={
-                            errors.publication_date ? "error" : ""
-                        }
-                        help={
-                            errors.publication_date
-                                ? errors.publication_date[0]
-                                : ""
-                        }
-                    >
-                        <DatePicker className="w-full" />
-                    </Form.Item>
-
-                    
-
-                    <Form.Item
-                        name="due_date"
-                        label="Due Date"
-                        className="w-full"
-                        validateStatus={errors.due_date ? "error" : ""}
-                        help={errors.due_date ? errors.due_date[0] : ""}
-                    >
-                      <Input />
-                    </Form.Item>
-                </div>
-
                 <Form.Item
                     name="active"
                     valuePropName="checked"
@@ -421,7 +390,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
                             : ""
                     }
                 >
-                    <Checkbox>Active</Checkbox>
+                    <Checkbox>Featured Artlce</Checkbox>
                 </Form.Item>
 
             </Modal>

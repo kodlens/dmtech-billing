@@ -6,20 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Hash;
-use Auth;
 use App\Models\User;
 
-class AdminUserController extends Controller
+
+class AdminConsumerController extends Controller
 {
     public function index(){
-        return Inertia::render('Admin/User/AdminUserIndex');
+        return Inertia::render('Admin/Consumer/AdminConsumerIndex');
     }
 
     public function getData(Request $req){
 
         return User::where('username', 'like', $req->search . '%')
             ->where('lname', 'like', $req->lname . '%')
+            ->where('role',  'USER')
             ->paginate($req->perpage);
     }
 
@@ -27,6 +27,9 @@ class AdminUserController extends Controller
         return User::find($id);
     }
 
+    public function create(){
+        return Inertia::render('Admin/Consumer/AdminConsumerCreateEdit');
+    }
 
     public function store(Request $req){ 
         $req->validate([
