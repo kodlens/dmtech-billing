@@ -46,11 +46,28 @@ export default function AdminLayout(
             onClick: () => router.visit('/admin/dashboard')
 		},
         
+       
         {
-            key: 'admin.billing.index',
-            icon: <BarsOutlined />,
+            key: 'billings',
+            icon: <FilePptOutlined />,
             label: 'Billing',
-            onClick: () => router.visit('/admin/billings')
+            // onClick: () => router.visit('/admin/pages')
+            children: [
+                {
+                    key: 'admin.billings.index',
+                    label: 'Billing',
+                    onClick: () => router.visit('/admin/billings/billings')
+                },
+                
+                {
+                    key: 'admin.billing-payment.index',
+                    label: 'Billing Payment' ,
+                    onClick: ()=> router.visit('/admin/billings/billing-payments'),
+                },
+            ],
+        },
+        {
+            type: 'divider',
         },
          
         {
@@ -62,32 +79,7 @@ export default function AdminLayout(
         {
             type: 'divider',
         },
-        // {
-        //     key: 'pages.index',
-        //     icon: <FilePptOutlined />,
-        //     label: 'Pages',
-        //     // onClick: () => router.visit('/admin/pages')
-        //     children: [
-        //         {
-        //             key: 'pages.banner.index',
-        //             label: 'Banners' ,
-        //             onClick: ()=> router.visit('/admin/pages/banners'),
-        //         },
-        //         {
-        //             key: 'pages.dostv.index',
-        //             label: 'DOSTv' ,
-        //             onClick: ()=> router.visit('/admin/pages/dostvs'),
-        //         },
-        //         {
-        //             key: 'pages.featured-videos.index',
-        //             label: 'Featured Videos' ,
-        //             onClick: ()=> router.visit('/admin/pages/featured-videos'),
-        //         },
-        //     ],
-        // },
-        // {
-        //     type: 'divider',
-        // },
+        
         {
             type: 'divider'
         },

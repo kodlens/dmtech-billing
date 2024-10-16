@@ -180,7 +180,7 @@ export default function AdminBillingIndex({ auth }: PageProps) {
 									<Space size="small">
 										<Button shape="circle" icon={<EditOutlined/>} 
 											onClick={ ()=> handleEditClick(data.id) } />
-										<ChangePassword data={data} onSuccess={loadDataAsync}/>
+										{/* <ChangePassword data={data} onSuccess={loadDataAsync}/> */}
 									</Space>
 								)}
 							/>
